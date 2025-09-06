@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: ipo-insight-plus-api
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+      database: ipo-insight-plus
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${IPOINSIGHTPLUS_EMAIL_USERNAME}
+    password: ${IPOINSIGHTPLUS_EMAIL_APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+            auth: true
+            starttls:
+              enable: true
+            ssl:
+              protocols: TLSv1.2
+logging:
+  file:
+    name: logs/ipo-insight-plus-api.log
+
+ipo-insight-plus:
+    api:
+      url: https://www.sharesansar.com/existing-issues
+    notification:
+      from:
+        email: ${IPOINSIGHTPLUS_EMAIL_USERNAME}
+        name: IPO Insight+
+      subject:
+        new-ipo: 🚨 New IPO Alert
+        closing-ipo: 📌 IPO Closure Alert
