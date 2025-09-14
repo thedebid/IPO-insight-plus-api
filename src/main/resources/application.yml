@@ -30,5 +30,5 @@ ipo-insight-plus:
         email: ${IPOINSIGHTPLUS_EMAIL_USERNAME}
         name: IPO Insight+
       subject:
-        new-ipo: 🚨 New IPO Alert
+        new-ipo: 🚨 Here We Go! New IPO
         closing-ipo: 📌 IPO Closure Alert
