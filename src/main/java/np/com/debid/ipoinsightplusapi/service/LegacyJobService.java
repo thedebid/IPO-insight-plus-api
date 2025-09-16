@@ -6,6 +6,7 @@ import np.com.debid.ipoinsightplusapi.entity.LegacyUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -31,9 +32,9 @@ public class LegacyJobService {
 
     @Autowired
     private LegacyUserService legacyUserService;
-
+    @Scheduled(cron = "0 0 10 * * *", zone = "Asia/Kathmandu")
     public void runJobEveryMorning() {
-        logger.info("Notification Service Initialized at {}", LocalDateTime.now());
+        logger.info("Executing scheduled morning notification job at {}", LocalDateTime.now().format(DATE_FORMATTER));
         logger.info("Fetching legacy users list from database...");
         List<LegacyUser> legacyUsers = legacyUserService.getAllLegacyUser();
         logger.info("Total legacy users fetched: {}", legacyUsers.size());
@@ -76,7 +77,7 @@ public class LegacyJobService {
                     }
                 }
             }
-
+            logger.info("Scheduled job completed.");
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
