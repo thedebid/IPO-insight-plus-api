@@ -1,5 +1,6 @@
 package np.com.debid.ipoinsightplusapi.contoller;
 
+import jakarta.validation.Valid;
 import np.com.debid.ipoinsightplusapi.dto.UserRegisterDTO;
 import np.com.debid.ipoinsightplusapi.entity.User;
 import np.com.debid.ipoinsightplusapi.service.UserService;
@@ -22,8 +23,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+    @PostMapping("/auth/register")
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
         User createdUser = userService.createUser(userRegisterDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }

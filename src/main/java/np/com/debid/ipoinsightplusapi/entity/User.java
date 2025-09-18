@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -30,6 +32,15 @@ public class User {
     private Set<ShareIssueType> applicableIssue = Set.of(ShareIssueType.GENERAL_IPO);
 
     @Field
+    private boolean legacyUser = false;
+
+    @Field
     private UserStatus status = UserStatus.ACTIVE;
+
+    @Field
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Field
+    private Set<Role> roles = new HashSet<>();
 }
 
