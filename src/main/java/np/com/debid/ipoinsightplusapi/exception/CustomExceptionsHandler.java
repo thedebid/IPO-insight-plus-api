@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -23,6 +24,16 @@ public class CustomExceptionsHandler {
 
     @ExceptionHandler(value = {CustomException.class})
     public ResponseEntity<Object> handleCustomException(CustomException exception, WebRequest request) {
+        httpStatusCode = exception.getErrorCode();
+        errorMessage = exception.getMessage();
+        apiPath = ((ServletWebRequest) request).getRequest().getRequestURI();
+        httpMethod = ((ServletWebRequest) request).getRequest().getMethod();
+        ExceptionDTO exceptionResponseDTO = new ExceptionDTO(httpStatusCode, null, errorMessage, httpMethod, apiPath, data);
+        return new ResponseEntity<>(exceptionResponseDTO, HttpStatusCode.valueOf(httpStatusCode));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentialsException(CustomException exception, WebRequest request) {
         httpStatusCode = exception.getErrorCode();
         errorMessage = exception.getMessage();
         apiPath = ((ServletWebRequest) request).getRequest().getRequestURI();

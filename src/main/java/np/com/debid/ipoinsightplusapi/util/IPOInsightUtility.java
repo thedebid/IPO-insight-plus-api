@@ -1,4 +1,4 @@
-package np.com.debid.ipoinsightplusapi.utils;
+package np.com.debid.ipoinsightplusapi.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
