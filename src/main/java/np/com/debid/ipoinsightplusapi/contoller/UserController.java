@@ -1,9 +1,13 @@
 package np.com.debid.ipoinsightplusapi.contoller;
 
 import jakarta.validation.Valid;
+import np.com.debid.ipoinsightplusapi.dto.LoginRequest;
+import np.com.debid.ipoinsightplusapi.dto.LoginResponse;
 import np.com.debid.ipoinsightplusapi.dto.UserRegisterDTO;
 import np.com.debid.ipoinsightplusapi.entity.User;
 import np.com.debid.ipoinsightplusapi.service.UserService;
+import np.com.debid.ipoinsightplusapi.util.ResponseUtil;
+import np.com.debid.ipoinsightplusapi.util.ResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +31,10 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
         User createdUser = userService.createUser(userRegisterDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/auth/login")
+    public ResponseEntity<ResponseWrapper<LoginResponse>> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        return ResponseUtil.successResponse("Login successful.", userService.authenticateLoginRequest(loginRequest));
     }
 }
