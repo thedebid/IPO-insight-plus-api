@@ -72,4 +72,15 @@ public class ExceptionDTO {
         this.apiPath = apiPath;
         this.errors = errors;
     }
+
+    public ExceptionDTO(int httpStatusCode, Object o, String errorMessage, String httpMethod, String apiPath, Object data, Object errors) {
+        this();
+        this.httpStatusCode = httpStatusCode;
+        this.message = message;
+        this.errorMessage = errorMessage;
+        this.httpMethod = httpMethod;
+        this.apiPath = apiPath;
+        this.data = data;
+        this.errors = errors;
+    }
 }

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface LegacyUserRepository extends MongoRepository<LegacyUser, String> {
     List<LegacyUser> findByLegacyUser(Boolean isLegacyUser);
+    LegacyUser findByLegacyUserAndEmail(Boolean isLegacyUser, String email);
 }
