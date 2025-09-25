@@ -26,10 +26,6 @@ public class LegacyUserService {
     }
 
     public LegacyUser findLegacyUserByEmail(String email) {
-        return legacyUserRepository.findByLegacyUser(true)
-                .stream()
-                .filter(legacyUser -> legacyUser.getEmail().equalsIgnoreCase(email))
-                .findFirst()
-                .orElse(null);
+        return legacyUserRepository.findByLegacyUserAndEmail(true, email);
     }
 }

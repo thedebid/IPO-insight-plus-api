@@ -1,8 +1,11 @@
 package np.com.debid.ipoinsightplusapi.contoller;
 
+import jakarta.validation.Valid;
 import np.com.debid.ipoinsightplusapi.dto.LegacyUserDTO;
 import np.com.debid.ipoinsightplusapi.entity.LegacyUser;
 import np.com.debid.ipoinsightplusapi.service.LegacyUserService;
+import np.com.debid.ipoinsightplusapi.util.ResponseUtil;
+import np.com.debid.ipoinsightplusapi.util.ResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +34,12 @@ public class LegacyUserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody LegacyUserDTO legacyUserDTO) {
+    public ResponseEntity<ResponseWrapper<Object>> post(@RequestBody @Valid LegacyUserDTO legacyUserDTO) {
         LegacyUser legacyUser = legacyUserService.findLegacyUserByEmail(legacyUserDTO.getEmail());
-        if(Objects.nonNull(legacyUser)) {
+        if (Objects.nonNull(legacyUser)) {
             logger.info("Found legacy user with email {}", legacyUserDTO.getEmail());
-            return new ResponseEntity<>("User with this email already exists as a legacy user.", HttpStatus.CONFLICT);
+            return ResponseUtil.successResponse(HttpStatus.CONFLICT, "User with this email already exists as a legacy user.");
         }
-        return new ResponseEntity<>(legacyUserService.createLegacyUser(legacyUserDTO), HttpStatus.CREATED);
+        return ResponseUtil.successResponse(HttpStatus.CREATED, "Legacy user created successfully.", legacyUserService.createLegacyUser(legacyUserDTO));
     }
 }

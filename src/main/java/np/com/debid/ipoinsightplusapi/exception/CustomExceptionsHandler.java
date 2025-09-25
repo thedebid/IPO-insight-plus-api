@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -40,5 +42,28 @@ public class CustomExceptionsHandler {
         httpMethod = ((ServletWebRequest) request).getRequest().getMethod();
         ExceptionDTO exceptionResponseDTO = new ExceptionDTO(httpStatusCode, null, errorMessage, httpMethod, apiPath, data);
         return new ResponseEntity<>(exceptionResponseDTO, HttpStatusCode.valueOf(httpStatusCode));
+    }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<Object> handleInsufficientAuthenticationException(CustomException exception, WebRequest request) {
+        httpStatusCode = exception.getErrorCode();
+        errorMessage = exception.getMessage();
+        apiPath = ((ServletWebRequest) request).getRequest().getRequestURI();
+        httpMethod = ((ServletWebRequest) request).getRequest().getMethod();
+        ExceptionDTO exceptionResponseDTO = new ExceptionDTO(httpStatusCode, null, errorMessage, httpMethod, apiPath, data);
+        return new ResponseEntity<>(exceptionResponseDTO, HttpStatusCode.valueOf(httpStatusCode));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+        httpStatusCode = HttpStatus.BAD_REQUEST.value();
+        errorMessage = "Validation failed";
+        apiPath = ((ServletWebRequest) request).getRequest().getRequestURI();
+        httpMethod = ((ServletWebRequest) request).getRequest().getMethod();
+        errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .toList();
+        ExceptionDTO exceptionResponseDTO = new ExceptionDTO(httpStatusCode, null, errorMessage, httpMethod, apiPath, data, errors);
+        return new ResponseEntity<>(exceptionResponseDTO, HttpStatus.BAD_REQUEST);
     }
 }
