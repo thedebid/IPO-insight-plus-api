@@ -17,8 +17,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import static np.com.debid.ipoinsightplusapi.utils.IPOInsightUtility.DATE_FORMATTER;
-import static np.com.debid.ipoinsightplusapi.utils.IPOInsightUtility.getTodaysDate;
+import static np.com.debid.ipoinsightplusapi.util.IPOInsightUtility.DATE_FORMATTER;
+import static np.com.debid.ipoinsightplusapi.util.IPOInsightUtility.getTodaysDate;
 
 @Service
 public class LegacyJobService {
